@@ -4,12 +4,20 @@ class Blocks():
 	
 		def __init__(self):
 			self.allBlocks = []
-			self.H = random.randint(2, 10)
-			self.L = random.randint(2, 10)
-			self.smallBlock = pygame.Rect(400, 200, self.H, self.L)
-			self.medBlock = pygame.Rect(400, 200, 10, 20)
-			self.allBlocks.append(self.smallBlock)
+			self.madeBlocks = []
 			self.newBlockTime = 200
+			self.oldBlockTime = 200
+			self.appendBlocks()
+			
+			
+		def appendBlocks(self):
+			smallBlock = 10, 10
+			medBlock = 20, 10
+			largeBlock = 14, 24
+			self.madeBlocks.append(smallBlock)
+			self.madeBlocks.append(medBlock)
+			self.madeBlocks.append(largeBlock)
+		
 		
 		def PlaceFloor(self):
 			self.floor = pygame.Rect(0, 210, 400, 20)
@@ -32,8 +40,12 @@ class Blocks():
 		def NewBlock(self):
 			self.newBlockTime -= 1
 			if self.newBlockTime == 0:
-				self.H = random.randint(2, 10)
-				self.L = random.randint(2, 10)			
-				self.allBlocks.append(self.smallBlock)
-				self.newBlockTime = 200
+
+				x = random.randint(0,2)
+				self.allBlocks.append(pygame.Rect(400, 200, self.madeBlocks[x]))
+				
+				
+				self.oldBlockTime = self.oldBlockTime - 10
+				self.newBlockTime = self.oldBlockTime - 10
+				print self.oldBlockTime
 
