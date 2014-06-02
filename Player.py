@@ -20,11 +20,14 @@ class Player():
 					if e.key == pygame.K_UP:
 						self.PlayerAscend()
 						
-	def Collide(self, floor):
+	def Collide(self, floor, block):
 		if self.player.colliderect(floor):
 			self.player.bottom = floor.top
 			self.descending = False
 			self.ascending = False
+		for blocks in block:
+			if self.player.colliderect(blocks):
+				self.playing = False
 
 	def Render(self, screen):
 		pygame.draw.rect(screen, (255,0,0), self.player)

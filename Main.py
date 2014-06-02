@@ -7,11 +7,11 @@ while (globals.player.playing):
 
 	globals.clock.tick(80)
 	globals.blocks.DrawFloor(globals.window.screen)
-	globals.player.Collide(globals.blocks.floor)
+	globals.player.Collide(globals.blocks.floor, globals.blocks.allBlocks)
 	globals.player.Gravity()
 	globals.player.Update()
 	globals.blocks.MoveBlock()
-	#globals.blocks.NewBlock()
+	globals.blocks.NewBlock()
 	globals.blocks.DrawBlock(globals.window.screen)
 	globals.player.PlayerJump(globals.player.ascending, globals.player.jumpHeight)
 	globals.player.Render(globals.window.screen)

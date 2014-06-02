@@ -1,11 +1,14 @@
 import pygame
+import random
 class Blocks():
 	
 		def __init__(self):
-			self.blocks = []
-			self.smallBlock = pygame.Rect(400, 200, 10, 10)
+			self.allBlocks = []
+			self.H = random.randint(2, 10)
+			self.L = random.randint(2, 10)
+			self.smallBlock = pygame.Rect(400, 200, self.H, self.L)
 			self.medBlock = pygame.Rect(400, 200, 10, 20)
-			self.blocks.append(self.smallBlock)
+			self.allBlocks.append(self.smallBlock)
 			self.newBlockTime = 200
 		
 		def PlaceFloor(self):
@@ -15,18 +18,22 @@ class Blocks():
 
 			
 		def MoveBlock(self):
-			for block in self.blocks:
+			for block in self.allBlocks:
 				block.bottom = self.floor.top
 				block.x -= 1
 				if block.right <= 0:
-					block.x = 400
+					self.allBlocks.remove(block)
+
 		
 		def DrawBlock(self, screen):
-			for block in self.blocks:
+			for block in self.allBlocks:
 				pygame.draw.rect(screen, (0,0,0), block)
 				
 		def NewBlock(self):
 			self.newBlockTime -= 1
 			if self.newBlockTime == 0:
-				self.blocks.append(self.smallBlock)
+				self.H = random.randint(2, 10)
+				self.L = random.randint(2, 10)			
+				self.allBlocks.append(self.smallBlock)
 				self.newBlockTime = 200
+
