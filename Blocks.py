@@ -12,8 +12,8 @@ class Blocks():
 			
 		def appendBlocks(self):
 			smallBlock = 10, 10
-			medBlock = 20, 10
-			largeBlock = 12, 20
+			medBlock = 13, 15
+			largeBlock = 12, 20 
 			floatingBlock = 10, 10
 			self.madeBlocks.append(floatingBlock)
 			self.madeBlocks.append(smallBlock)

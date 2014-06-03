@@ -6,7 +6,7 @@ class Player():
 		self.player = pygame.Rect(200, 200, 10, 10)
 		self.ascending = False
 		self.descending = False
-		self.baseJumpHeight = 400
+		self.baseJumpHeight = 15
 		
 		self.jumpHeight = self.baseJumpHeight
 		self.jumpSpeed = 0
