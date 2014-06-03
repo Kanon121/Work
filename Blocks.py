@@ -13,7 +13,9 @@ class Blocks():
 		def appendBlocks(self):
 			smallBlock = 10, 10
 			medBlock = 20, 10
-			largeBlock = 14, 24
+			largeBlock = 12, 20
+			floatingBlock = 10, 10
+			self.madeBlocks.append(floatingBlock)
 			self.madeBlocks.append(smallBlock)
 			self.madeBlocks.append(medBlock)
 			self.madeBlocks.append(largeBlock)
@@ -41,11 +43,14 @@ class Blocks():
 			self.newBlockTime -= 1
 			if self.newBlockTime == 0:
 
-				x = random.randint(0,2)
-				self.allBlocks.append(pygame.Rect(400, 200, self.madeBlocks[x]))
+				x = random.randint(0,3)
+				randBlock = self.madeBlocks[x]
+				self.allBlocks.append(pygame.Rect(400, 200, randBlock[0], randBlock[1]))
 				
-				
-				self.oldBlockTime = self.oldBlockTime - 10
-				self.newBlockTime = self.oldBlockTime - 10
-				print self.oldBlockTime
+				if self.oldBlockTime >= 40:
+					self.oldBlockTime = self.oldBlockTime - 10
+					self.newBlockTime = self.oldBlockTime - 10
+				else:
+					self.oldBlockTime = 40
+					self.newBlockTime = 40
 
