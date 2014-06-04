@@ -2,7 +2,7 @@
 bin/
 bin-debug/
 bin-release/
-.pyc
+*.pyc
 # Other files and folders
 .settings/
 
