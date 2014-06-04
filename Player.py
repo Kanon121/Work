@@ -6,11 +6,11 @@ class Player():
 		self.player = pygame.Rect(200, 200, 10, 10)
 		self.ascending = False
 		self.descending = False
-		self.baseJumpHeight = 15
-		
+		self.baseJumpHeight = 25
+		self.points = 0
 		self.jumpHeight = self.baseJumpHeight
-		self.jumpSpeed = 0
-		self.fallSpeed = 0
+		self.jumpSpeed = 0.1
+		self.fallSpeed = 0.1
 		
 	def Update(self):
 		for e in pygame.event.get(): 
@@ -20,6 +20,7 @@ class Player():
 				if not self.descending:
 					if e.key == pygame.K_UP:
 						self.PlayerAscend()
+						pygame.mixer.Sound.play("jump.wav")
 						
 	def Collide(self, floor, block):
 		if self.player.colliderect(floor):
@@ -41,7 +42,7 @@ class Player():
 		
 		if jumpHeight != 0:
 			if ascending == True:
-				self.jumpSpeed += 0.4
+				self.jumpSpeed += 0.1
 				self.player.y -= 1 + self.jumpSpeed
 				self.jumpHeight -= 1
 				
@@ -53,7 +54,7 @@ class Player():
 	
 	def Gravity(self):
 		if self.descending:
-			self.fallSpeed += 0.4
+			self.fallSpeed += 0.1
 			self.player.y += 1 + self.fallSpeed
 		else: 
 			self.descending = False

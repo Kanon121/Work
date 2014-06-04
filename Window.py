@@ -10,5 +10,9 @@ class Window:
             color = 225,0,0
         if color == "white":
         	color = 255,255,255
+        if color == "blue":
+        	color = 0,0,255
+        if color == "green":
+        	color = 0, 255, 0
         self.screen.fill(color)
         

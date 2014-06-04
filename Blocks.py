@@ -5,10 +5,10 @@ class Blocks():
 		def __init__(self):
 			self.allBlocks = []
 			self.madeBlocks = []
-			self.newBlockTime = 200
-			self.oldBlockTime = 200
+			self.newBlockTime = 100
+			self.oldBlockTime = 100
 			self.appendBlocks()
-			
+			self.x = 0
 			
 		def appendBlocks(self):
 			smallBlock = 10, 10
@@ -29,10 +29,18 @@ class Blocks():
 			
 		def MoveBlock(self):
 			for block in self.allBlocks:
-				block.bottom = self.floor.top
-				block.x -= 1
-				if block.right <= 0:
-					self.allBlocks.remove(block)
+				if block.y != 190:
+					block.bottom = self.floor.top
+					block.x -= 1
+					if block.right <= 0:
+						self.allBlocks.remove(block)
+						
+					
+				else:
+					block.x -= 1
+					if block.right <= 0:
+						self.allBlocks.remove(block)
+					
 
 		
 		def DrawBlock(self, screen):
@@ -43,14 +51,18 @@ class Blocks():
 			self.newBlockTime -= 1
 			if self.newBlockTime == 0:
 
-				x = random.randint(0,3)
-				randBlock = self.madeBlocks[x]
-				self.allBlocks.append(pygame.Rect(400, 200, randBlock[0], randBlock[1]))
+				self.x = random.randint(0,3)
 				
-				if self.oldBlockTime >= 40:
+				self.randBlock = self.madeBlocks[self.x]
+				
+				if self.x != 0:
+					self.allBlocks.append(pygame.Rect(400, 200, self.randBlock[0], self.randBlock[1]))
+				if self.x == 0:
+					self.allBlocks.append(pygame.Rect(400, 190, self.randBlock[0], self.randBlock[1]))
+				if self.oldBlockTime >= 70:
 					self.oldBlockTime = self.oldBlockTime - 10
 					self.newBlockTime = self.oldBlockTime - 10
 				else:
-					self.oldBlockTime = 40
-					self.newBlockTime = 40
+					self.oldBlockTime = 70
+					self.newBlockTime = 70
 
