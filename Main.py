@@ -5,7 +5,6 @@ globals.window.CreateWindow(400, 400)
 globals.blocks.PlaceFloor()
 
 while (globals.player.playing):
-
 	globals.clock.tick(80)
 	globals.blocks.DrawFloor(globals.window.screen)
 	globals.player.Collide(globals.blocks.floor, globals.blocks.allBlocks)
@@ -16,5 +15,5 @@ while (globals.player.playing):
 	globals.blocks.DrawBlock(globals.window.screen)
 	globals.player.PlayerJump(globals.player.ascending, globals.player.jumpHeight)
 	globals.player.Render(globals.window.screen)
-	globals.window.RenderWindow("green")
+	globals.window.RenderWindow("white")
 	
