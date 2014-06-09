@@ -1,10 +1,12 @@
 import pygame
-from Player import Player
-from Blocks import Blocks 
+from PlayerTop import playerTop
+from PlayerBottom import playerBottom
+from BlocksTop import blocksTop 
 from Window import Window
 
 
 clock = pygame.time.Clock()
 window = Window()
-player = Player()
-blocks = Blocks()
+playerTop = playerTop()
+playerBottom = playerBottom()
+blocksTop = blocksTop()
