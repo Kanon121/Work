@@ -26,8 +26,10 @@ while (globals.playerTop.playing):
 	
 	globals.playerTop.playerTopJump(globals.playerTop.ascending, globals.playerTop.jumpHeight)
 	globals.playerTop.Render(globals.window.screen)
+	
 	globals.playerBottom.playerBottomJump(globals.playerBottom.ascending, globals.playerBottom.jumpHeight)
 	globals.playerBottom.Render(globals.window.screen)
+	
 	globals.pygame.display.flip()
 	globals.window.RenderWindow("white")
 	
