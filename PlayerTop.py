@@ -23,10 +23,7 @@ class playerTop():
 						self.playerTopAscend()
 						sound = pygame.mixer.Sound("jump.wav")
 						sound.play()
-					#if e.key == pygame.K_DOWN:
-					#	playerBottom.playerBottomAscend()
-					#	sound = pygame.mixer.Sound("jump.wav")
-					#	sound.play()
+						
 	def Collide(self, floor, block):
 		if self.playerTop.colliderect(floor):
 			self.playerTop.bottom = floor.top
@@ -41,7 +38,7 @@ class playerTop():
 
 	def Render(self, screen):
 		pygame.draw.rect(screen, (255,0,0), self.playerTop)
-		
+		pygame.display.flip()
 
 	def playerTopAscend(self):
 		self.ascending = True
