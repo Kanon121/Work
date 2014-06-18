@@ -14,11 +14,17 @@ while (globals.player.playing):
 			globals.player.playing = False
 		else:
 			globals.player.Update(e, globals.player)
-	        
+	
+	globals.player.checkPlayerJump(globals.player)        
 	globals.player.Gravity(globals.player)
 	globals.blocks.NewBlock()
 	globals.blocks.MoveBlock()
 	globals.blocks.DrawBlock(globals.window.screen)
 	globals.player.Render(globals.window.screen, globals.player, globals.player2)
 	globals.window.RenderWindow("white")
+	
+	
+	
+	
+	
 	
