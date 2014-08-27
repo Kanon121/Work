@@ -3,10 +3,12 @@
 #This script will replace all files in a folder with a zip of its contents excluding .py, .swp, and .zip
 
 
+
 import os
 from os import listdir
 from os.path import isfile, join
 import zipfile
+from zipfile import ZIP_DEFLATED
 
 class RarFiles():
     def __init__(self, path):
@@ -19,15 +21,14 @@ class RarFiles():
             self.files.append(f)
     def CreateZips(self, path):
         for f in self.files:
-            if not f.endswith('.py'):
-                if not f.endswith('.swp'):
-                    if not f.endswith('.zip'):
-                        print f
-                        zipp = zipfile.ZipFile((path + '/' + f + '.zip'), 
-                            mode='w')
-                        zipp.write(path + '/' +  f)
-                        zipp.close()
-                        os.remove(path + '/' + f)
+			if f.endswith('.bak'):
+				zipp = zipfile.ZipFile((path + '/' + f + '.zip'), 
+					'w', zipfile.ZIP_DEFLATED)
+				zipp.write(f)
+				zipp.close()
+				os.remove(path + '/' + f)
+		        
+rar = RarFiles('/home/kanon/Desktop/rar/')
                         
 
 #Example: 
