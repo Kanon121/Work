@@ -21,10 +21,12 @@ class RarFiles():
             self.files.append(f)
     def CreateZips(self, path):
         for f in self.files:
+			print f			
 			if f.endswith('.bak'):
 				zipp = zipfile.ZipFile((path + '/' + f + '.zip'), 
 					'w', zipfile.ZIP_DEFLATED)
-				zipp.write(f)
+				print f
+				zipp.write(f, f)
 				zipp.close()
 				os.remove(path + '/' + f)
 		        
