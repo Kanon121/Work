@@ -1,3 +1,7 @@
+#Script created by Kanon
+#this will un-rar everything in a folder, extracting it's contents, then deleting the rar file
+
+
 import shutil
 import os
 from os import listdir
@@ -26,8 +30,9 @@ class RarFiles():
 			zipp.extractall(path)
 			zipp.close()
 
-PATH = '/home/kanon/Desktop/rar/'					        
-rar = RarFiles(PATH)
+# EXAMPLE: 
+#PATH = '/home/kanon/Desktop/rar/'					        
+#rar = RarFiles(PATH)
 
 class MoveFiles():
 	def __init__(self):
@@ -44,5 +49,5 @@ class MoveFiles():
 			shutil.copy(newPath + f[0:cut], PATH)
 			os.remove(PATH + f)
 
-
-copy = MoveFiles()
+#Don't forget to call this so you can work outside of your current working dir 
+#copy = MoveFiles()
