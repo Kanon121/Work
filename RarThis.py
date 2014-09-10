@@ -1,6 +1,6 @@
 
 #Script created by Kanon
-#This script will replace all files in a folder with a zip of its contents excluding .py, .swp, and .zip
+#This script will replace all files in a folder with a zip of its contents if the file ends with .bak
 
 
 
@@ -30,8 +30,8 @@ class RarFiles():
 				zipp.close()
 				os.remove(path + '/' + f)
 		        
-rar = RarFiles('/home/kanon/Desktop/rar/')
+
                         
 
 #Example: 
-#rar = RarFiles("/home/kanon/Desktop/rar")
+#rar = RarFiles("/home/user/Desktop/rar")
