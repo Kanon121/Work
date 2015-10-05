@@ -81,7 +81,7 @@ class Connector(ConnectionListener):
         MakePlayer(id)
         
 connector = Connector()    
-
+ 
 	  
 while connector.running:
     connector.update()
