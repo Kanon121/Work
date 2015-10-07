@@ -1,7 +1,7 @@
 import pygame
 from PodSixNet.Connection import ConnectionListener, connection
 from time import sleep
-import sys
+import sys, math
 size = width, height = 200, 200
 screen = pygame.display.set_mode(size)
 black = 0, 0, 0
@@ -13,6 +13,7 @@ def DrawWindow():
     
 AllPlayers = []
 IDUsed = []
+AllBullets = []
 class Player:
     def __init__(self, id):
         self.rect = pygame.Rect(10, 10, 10, 10)
@@ -24,13 +25,66 @@ class Player:
             self.color = (0,255,0)
             self.rect.x = 10
         self.id = id
+        self.speed = 4
         
     def Draw(self):
         pygame.draw.rect(screen, (self.color), self.rect)
 
         
+    def Move(self, dir):
+        spx = self.speed
+        spy = self.speed
+        
+        if dir == "up":
+            dy = -spy
+            dx = 0
+        if dir == "down":
+            dy = spy
+            dx = 0
+        if dir == "right":
+            dx = spx
+            dy = 0
+        if dir == "left":
+            dx = -spx
+            dy = 0   
+        self.rect.x += dx
+        self.rect.y += dy
+
+def AssociatePlayer(id):
+    PosInList = id - 1
+    player = AllPlayers[PosInList]
+    return player
+
 
         
+class Bullet():
+    def __init__(self, id, x, y):
+        guy = AssociatePlayer(id)
+        self.rect = pygame.Rect(2, 2, 2, 2)
+        self.rect.x = guy.rect.x + 10
+        self.rect.y = guy.rect.y + 10
+        self.startX = guy.rect.x + 10
+        self.startY = guy.rect.y + 10
+        self.posX = guy.rect.x + 10
+        self.posY = guy.rect.y + 10
+        self.speed = 15
+        self.destX = x
+        self.destY = y
+        AllBullets.append(self)
+
+    def Shoot(self):
+        diff = (self.startX - self.destX, self.startY - self.destY)
+        distance = math.sqrt(diff[0]**2 + diff[1]**2)
+        diff_norm = (self.speed * (diff[0] / distance), self.speed * (diff[1] / distance))
+        self.posX -= diff_norm[0]
+        self.posY -= diff_norm[1]
+        self.rect.x = int(self.posX)
+        self.rect.y = int(self.posY)
+
+    def Draw(self):
+        for b in AllBullets:
+            pygame.draw.rect(screen, (100,100,100), b.rect)
+	      
 def MakePlayer(id):
     if id not in IDUsed:
         guy = Player(id)
@@ -46,8 +100,7 @@ class Connector(ConnectionListener):
         self.id = 0
         self.players = 0
     def update(self):
-        connection.Pump()
-        self.Pump()
+
         key = pygame.key.get_pressed()
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
@@ -58,7 +111,10 @@ class Connector(ConnectionListener):
             if e.type == pygame.KEYDOWN and e.key == pygame.K_p:
                 print AllPlayers
                 print IDUsed
-
+            if e.type == pygame.MOUSEBUTTONDOWN:
+                if e.button == 1:
+                    x, y = pygame.mouse.get_pos()
+                    b = Bullet(self.id, x, y)
 
         if key[pygame.K_w]:
             connector.Send({'action':'Move', 'id':self.id, 'dir':'up'})
@@ -76,6 +132,10 @@ class Connector(ConnectionListener):
         
         for p in AllPlayers:
             p.Draw()
+        for b in AllBullets:
+            print b
+            b.Shoot()
+            b.Draw()
         pygame.display.flip()
         DrawWindow()
         clock.tick(30)
@@ -96,19 +156,22 @@ class Connector(ConnectionListener):
         MakePlayer(id)
   
     def Network_Move(self, data):
+        dir = data['dir']
         for p in AllPlayers:
             if p.id == data['id']:
-                dir = data['dir']
-                if dir == "up":
-                    p.rect.y -= 5
-                if dir == "down":
-                    p.rect.y += 5
-            
+                p.Move(dir)
 
   
 connector = Connector()    
-
+ready = False
 	  
 while connector.running:
-    connector.update()
+    connection.Pump()
+    connector.Pump()
+    if len(AllPlayers) > 1:
+        ready = True
+        print "Waiting for other player.."
+        sleep(2.0)
+    if ready:
+        connector.update()
  
