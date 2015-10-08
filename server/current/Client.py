@@ -50,23 +50,27 @@ class Player:
         self.rect.x += dx
         self.rect.y += dy
 
+
 def AssociatePlayer(id):
     PosInList = id - 1
     player = AllPlayers[PosInList]
     return player
 
 
+    
+    
+    
         
 class Bullet():
     def __init__(self, id, x, y):
         guy = AssociatePlayer(id)
         self.rect = pygame.Rect(2, 2, 2, 2)
-        self.rect.x = guy.rect.x + 10
-        self.rect.y = guy.rect.y + 10
-        self.startX = guy.rect.x + 10
-        self.startY = guy.rect.y + 10
-        self.posX = guy.rect.x + 10
-        self.posY = guy.rect.y + 10
+        self.rect.x = guy.rect.x + 5
+        self.rect.y = guy.rect.y + 5
+        self.startX = guy.rect.x + 5
+        self.startY = guy.rect.y + 5
+        self.posX = guy.rect.x + 5
+        self.posY = guy.rect.y + 5
         self.speed = 15
         self.destX = x
         self.destY = y
@@ -83,7 +87,7 @@ class Bullet():
 
     def Draw(self):
         for b in AllBullets:
-            pygame.draw.rect(screen, (100,100,100), b.rect)
+            pygame.draw.rect(screen, (255,0,0), b.rect)
 	      
 def MakePlayer(id):
     if id not in IDUsed:
@@ -91,7 +95,7 @@ def MakePlayer(id):
         IDUsed.append(id)
         AllPlayers.append(guy)
         
-        
+       
 class Connector(ConnectionListener):
     
     def __init__(self):
@@ -99,8 +103,9 @@ class Connector(ConnectionListener):
         self.running = True
         self.id = 0
         self.players = 0
+        
     def update(self):
-
+        
         key = pygame.key.get_pressed()
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
@@ -114,8 +119,9 @@ class Connector(ConnectionListener):
             if e.type == pygame.MOUSEBUTTONDOWN:
                 if e.button == 1:
                     x, y = pygame.mouse.get_pos()
-                    b = Bullet(self.id, x, y)
+                    connector.Send({'action':'MakeBullet', 'id':self.id, 'mousepos':[x,y]})
 
+        
         if key[pygame.K_w]:
             connector.Send({'action':'Move', 'id':self.id, 'dir':'up'})
         if key[pygame.K_a]:
@@ -126,10 +132,16 @@ class Connector(ConnectionListener):
             connector.Send({'action':'Move', 'id':self.id, 'dir':'right'})
             
             
+        
+        
+        
+        
         if self.players != 0:
             self.players -= 1
             connector.Send({'action':'MakePlayer', 'id':self.id})
-        
+            
+
+            
         for p in AllPlayers:
             p.Draw()
         for b in AllBullets:
@@ -145,7 +157,7 @@ class Connector(ConnectionListener):
         
 	
     def Network(self, data):
-        #print data
+        print data
         pass
     def Network_GetList(self, data):
         self.players = data['list']
@@ -154,24 +166,25 @@ class Connector(ConnectionListener):
     def Network_MakePlayer(self, data):
         id = data['id']
         MakePlayer(id)
-  
+        
     def Network_Move(self, data):
         dir = data['dir']
         for p in AllPlayers:
             if p.id == data['id']:
+                p.rect.cetner = data['currpos']
                 p.Move(dir)
-
+                
+    def Network_MakeBullet(self, data):
+        id = data['id']
+        x = data['x']
+        y = data['y']
+        b = Bullet(id, x, y)
+                
   
 connector = Connector()    
-ready = False
 	  
 while connector.running:
     connection.Pump()
     connector.Pump()
-    if len(AllPlayers) > 1:
-        ready = True
-        print "Waiting for other player.."
-        sleep(2.0)
-    if ready:
-        connector.update()
+    connector.update()
  
