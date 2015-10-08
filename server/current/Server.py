@@ -19,9 +19,11 @@ class ClientChannel(Channel):
         num = data['id']
         self._server.MakePlayer(num)
     def Network_Move(self, data):
-        num = data['id']
-        dir = data['dir']
-        self._server.Move(num, dir)
+
+        self._server.Move(data)
+    
+    def Network_MakeBullet(self, data):
+        self._server.MakeBullet(data)
         
 class GameServer(Server):
     channelClass = ClientChannel
@@ -30,7 +32,7 @@ class GameServer(Server):
         Server.__init__(self, *args, **kwargs)     
         self.clients = []
         self.id = 0
-
+        
     def Connected(self, channel, addr):
         self.clients.append(channel)
         self.id += 1
@@ -44,9 +46,17 @@ class GameServer(Server):
             
             c.Send({'action': 'MakePlayer', 'id':id})
         
-    def Move(self, id, dir):
+    def Move(self, data):
+        num = data['id']
+        dir = data['dir']
         for c in self.clients:
             c.Send({'action': 'Move', 'id':id, 'dir':dir})
+            
+    def MakeBullet(self, data):
+        id = data['id']
+        mousepos = data['mousepos']
+        for c in self.clients:
+            c.Send({'action': 'MakeBullet', 'id': id, 'x':mousepos[0], 'y':mousepos[1]})
 
 mainServer = GameServer(localaddr=("localhost", 80))
 print "LISTENING FOR CONNECTIONS"
