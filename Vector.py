@@ -29,6 +29,12 @@ class Guy():
 		
 guy = Guy()
 	
+"""
+
+WHEN USING THE VECTOR MATH CHANGE guy.rect 's TO THE START POSITION
+OF THE BULLET!!
+
+"""
 	
 bullets = []
 class Bullet():
